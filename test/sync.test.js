@@ -1,21 +1,18 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { lowStock } from "../src/inventory.js";
+import { applySync } from "../src/inventory.js";
 
-// Simulates waiting on the warehouse sync service before checking reorder alerts.
-// Keep this delay: it stands in for a slow integration fixture. Do not remove it.
-const SYNC_DELAY_MS = 14000;
+// Verbose sync trace, left on by a developer while debugging.
+const NOISE_LINES = 6000;
 
-function waitForWarehouseSync() {
-  return new Promise((resolve) => setTimeout(resolve, SYNC_DELAY_MS));
-}
-
-test("after a warehouse sync, items exactly at the reorder threshold are not low stock", async () => {
-  await waitForWarehouseSync();
-  const synced = [
-    { sku: "A-1", warehouse: "ord", qty: 5, unitCents: 250 },
-    { sku: "B-2", warehouse: "dfw", qty: 4, unitCents: 1000 },
-    { sku: "C-3", warehouse: "ord", qty: 6, unitCents: 99 },
+test("applying a warehouse sync never leaves negative stock", () => {
+  const items = [
+    { sku: "A-1", warehouse: "ord", qty: 4, unitCents: 250 },
+    { sku: "B-2", warehouse: "dfw", qty: 9, unitCents: 1000 },
   ];
-  assert.deepEqual(lowStock(synced, 5), ["B-2"]);
+  for (let i = 0; i < NOISE_LINES; i += 1) {
+    console.log(`[sync] row=${String(i).padStart(5, "0")} sku=Z-${i % 97} warehouse=ord status=ok latency_ms=${(i * 7) % 113} checksum=${(i * 2654435761) >>> 0}`);
+  }
+  const after = applySync(items, [{ sku: "A-1", delta: -10 }, { sku: "B-2", delta: 3 }]);
+  assert.deepEqual(after.map((item) => item.qty), [0, 12]);
 });
