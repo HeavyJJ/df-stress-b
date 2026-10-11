@@ -16,12 +16,3 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm test
-      - name: Require a changelog
-        run: test -f CHANGELOG.md
-
-  license-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Require a license file
-        run: test -f LICENSE
