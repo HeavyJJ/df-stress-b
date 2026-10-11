@@ -12,7 +12,7 @@ export function stockValueCents(items) {
 
 /** SKUs whose qty is strictly below the threshold, in input order. */
 export function lowStock(items, threshold) {
-  return items.filter((item) => item.qty <= threshold).map((item) => item.sku);
+  return items.filter((item) => item.qty < threshold).map((item) => item.sku);
 }
 
 /** Map of warehouse -> SKUs stored there, in input order. */

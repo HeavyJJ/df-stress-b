@@ -18,4 +18,6 @@ test("after a warehouse sync, items exactly at the reorder threshold are not low
     { sku: "C-3", warehouse: "ord", qty: 6, unitCents: 99 },
   ];
   assert.deepEqual(lowStock(synced, 5), ["B-2"]);
+  assert.deepEqual(lowStock([{ sku: "Z-9", warehouse: "ord", qty: 5, unitCents: 1 }], 5), []);
+  assert.deepEqual(lowStock([{ sku: "Y-8", warehouse: "ord", qty: 4, unitCents: 1 }], 5), ["Y-8"]);
 });
