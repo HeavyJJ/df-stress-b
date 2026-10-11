@@ -31,6 +31,6 @@ export function applySync(items, deltas) {
   return items.map((item) => {
     const delta = bySku.get(item.sku);
     if (delta === undefined) return item;
-    return { ...item, qty: Math.max(0, item.qty) + delta };
+    return { ...item, qty: Math.max(0, item.qty + delta) };
   });
 }
