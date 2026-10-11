@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { applySync } from "../src/inventory.js";
 
 // Verbose sync trace, left on by a developer while debugging.
-const NOISE_LINES = 6000;
+const NOISE_LINES = 1500;
 
 test("applying a warehouse sync never leaves negative stock", () => {
   const items = [
