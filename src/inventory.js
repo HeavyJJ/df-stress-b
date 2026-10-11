@@ -12,11 +12,15 @@ export function stockValueCents(items) {
 
 /** SKUs whose qty is strictly below the threshold, in input order. */
 export function lowStock(items, threshold) {
-  return items.filter((item) => item.qty < threshold).map((item) => item.sku);
+  return items.filter((item) => item.qty <= threshold).map((item) => item.sku);
 }
 
 /** Map of warehouse -> SKUs stored there, in input order. */
 export function byWarehouse(items) {
-  const groups = Object.groupBy(items, (item) => item.warehouse);
-  return Object.fromEntries(Object.entries(groups).map(([warehouse, list]) => [warehouse, list.map((item) => item.sku)]));
+  const out = {};
+  for (let i = 0; i < items.length; i += 1) {
+    const item = items[i];
+    (out[item.warehouse] ??= []).push(item.sku);
+  }
+  return out;
 }
