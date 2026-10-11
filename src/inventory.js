@@ -12,7 +12,7 @@ export function stockValueCents(items) {
 
 /** SKUs whose qty is strictly below the threshold, in input order. */
 export function lowStock(items, threshold) {
-  return items.filter((item) => item.qty <= threshold).map((item) => item.sku);
+  return items.filter((item) => item.qty < threshold).map((item) => item.sku);
 }
 
 /** Map of warehouse -> SKUs stored there, in input order. */
@@ -23,4 +23,14 @@ export function byWarehouse(items) {
     (out[item.warehouse] ??= []).push(item.sku);
   }
   return out;
+}
+
+/** Apply stock deltas [{ sku, delta }]. Unknown SKUs are ignored. qty never goes below 0. */
+export function applySync(items, deltas) {
+  const bySku = new Map(deltas.map((d) => [d.sku, d.delta]));
+  return items.map((item) => {
+    const delta = bySku.get(item.sku);
+    if (delta === undefined) return item;
+    return { ...item, qty: Math.max(0, item.qty) + delta };
+  });
 }
