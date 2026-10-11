@@ -22,4 +22,5 @@ test("lists low-stock SKUs", () => {
 
 test("groups SKUs by warehouse", () => {
   assert.deepEqual(byWarehouse(ITEMS), { ord: ["A-1", "C-3"], dfw: ["B-2"] });
+  assert.deepEqual(byWarehouse([ITEMS[2]]), { ord: ["C-3"] });
 });
