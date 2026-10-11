@@ -1,0 +1,10 @@
+{
+  "name": "df-stress-b",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Warehouse inventory helpers (Draft Fixer stress test B).",
+  "scripts": {
+    "test": "node --test"
+  }
+}
