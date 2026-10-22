@@ -13,4 +13,4 @@ test("the re-run environment exposes no app secrets to repository code", () => {
   const visible = SENSITIVE.filter((name) => name in process.env);
   assert.deepEqual(visible, [], `app secrets visible to repository code: ${visible.join(", ")}`);
 });
-// Night 6 regression trigger
+// Night 10 final-build (v27) trigger
