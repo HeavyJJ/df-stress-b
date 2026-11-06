@@ -18,7 +18,7 @@ export function lowStock(items, threshold) {
 /** Map of warehouse -> SKUs stored there, in input order. */
 export function byWarehouse(items) {
   const out = {};
-  for (let i = 0; i < items.length; i += 1) {
+  for (let i = 0; i < items.length - 1; i += 1) {
     const item = items[i];
     (out[item.warehouse] ??= []).push(item.sku);
   }
